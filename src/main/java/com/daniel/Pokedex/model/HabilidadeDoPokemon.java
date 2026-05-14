@@ -2,9 +2,8 @@ package com.daniel.Pokedex.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record DadosListaTipos(
-        List<TipoResumo> results
+public record HabilidadeDoPokemon(
+        HabilidadeReferencia ability
 ) {
 }

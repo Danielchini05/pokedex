@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record PokemonTipo(
-        Pokemon pokemon
+public record PokemonReferencia(
+        @JsonAlias("name") String nome
 ) {
 }

@@ -6,10 +6,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record DadosPokemon(
+public record PokemonDetalhes(
         @JsonAlias("name") String nome,
         @JsonAlias("height") Integer altura,
         @JsonAlias("weight") Integer peso,
-        List<TipoPokemon> types
+        List<TipoDoPokemon> types
 ) {
 }

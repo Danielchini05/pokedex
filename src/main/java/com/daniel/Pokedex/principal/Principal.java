@@ -1,9 +1,9 @@
 package com.daniel.Pokedex.principal;
 
-import com.daniel.Pokedex.model.DadosHabilidade;
-import com.daniel.Pokedex.model.DadosListaTipos;
-import com.daniel.Pokedex.model.DadosPokemon;
-import com.daniel.Pokedex.model.DadosTipo;
+import com.daniel.Pokedex.model.PokemonHabilidades;
+import com.daniel.Pokedex.model.ListaTiposResposta;
+import com.daniel.Pokedex.model.PokemonDetalhes;
+import com.daniel.Pokedex.model.TipoDetalhes;
 import com.daniel.Pokedex.service.ConsumoApi;
 import com.daniel.Pokedex.service.ConverteDados;
 
@@ -15,9 +15,9 @@ public class Principal{
     private Scanner scanner = new Scanner(System.in);
     private ConsumoApi consumo = new ConsumoApi();
     private ConverteDados conversor = new ConverteDados();
-    private List<DadosPokemon> dadosPokemons = new ArrayList<>();
-    private List<DadosHabilidade> dadosHabilidades = new ArrayList<DadosHabilidade>();
-    private List<DadosTipo> tiposPokemons = new ArrayList<DadosTipo>();
+    private List<PokemonDetalhes> pokemonDetalhes = new ArrayList<>();
+    private List<PokemonHabilidades> pokemonHabilidades = new ArrayList<PokemonHabilidades>();
+    private List<TipoDetalhes> tiposPokemons = new ArrayList<TipoDetalhes>();
     private final String URL_BASE = "https://pokeapi.co/api/v2/";
     public void exibeMenu(){
         var opcao = -1;
@@ -52,61 +52,61 @@ public class Principal{
     }
 
     private void buscaPokemonPeloNome(){
-        DadosPokemon dadosPokemon = getDadosPokemon();
-        dadosPokemons.add(dadosPokemon);
-        double alturaMetros = dadosPokemon.altura() / 10.0;
-        double pesoKg = dadosPokemon.peso() / 10.0;
+        PokemonDetalhes pokemonDetalhes = getDadosPokemon();
+        this.pokemonDetalhes.add(pokemonDetalhes);
+        double alturaMetros = pokemonDetalhes.altura() / 10.0;
+        double pesoKg = pokemonDetalhes.peso() / 10.0;
 
-        System.out.println("Nome: " + dadosPokemon.nome());
-        dadosPokemon.types().forEach(t ->
+        System.out.println("Nome: " + pokemonDetalhes.nome());
+        pokemonDetalhes.types().forEach(t ->
                 System.out.println("Tipo: " + t.type().nome()));
         System.out.println("Altura: " + alturaMetros + " m");
         System.out.println("Peso: " + pesoKg + " kg\n");
     }
 
     private void buscaHabilidadesPokemon(){
-        DadosHabilidade dadosHabilidade = getHabilidades();
-        dadosHabilidades.add(dadosHabilidade);
-        dadosHabilidade.abilities().forEach(t ->
+        PokemonHabilidades pokemonHabilidades = getHabilidades();
+        this.pokemonHabilidades.add(pokemonHabilidades);
+        pokemonHabilidades.abilities().forEach(t ->
                 System.out.println("Habilidades: " + t.ability().nome()));
     }
 
     private void buscaTipoPokemon(){
-        DadosTipo tiposPokemon = getTiposPokemons();
+        TipoDetalhes tiposPokemon = getTiposPokemons();
         tiposPokemons.add(tiposPokemon);
         tiposPokemon.pokemon().forEach(p ->
-                System.out.println("Pokemon: " + p.pokemon().nome()));
+                System.out.println("Pokemon: " + p.pokemonReferencia().nome()));
     }
 
     private void mostraTiposExistentes(){
         var json = consumo.obterDados(URL_BASE + "type");
-        DadosListaTipos dados = conversor.obterDados(json, DadosListaTipos.class);
+        ListaTiposResposta dados = conversor.obterDados(json, ListaTiposResposta.class);
         dados.results().forEach(t ->
                 System.out.println("Tipo: " + t.nome()));
     }
 
-    private DadosPokemon getDadosPokemon(){
+    private PokemonDetalhes getDadosPokemon(){
         System.out.println("Digite nome do pokemon para busca:");
         var nomePokemon = scanner.nextLine();
         var json = consumo.obterDados(URL_BASE + "pokemon/" + nomePokemon.toLowerCase());
-        DadosPokemon dadosPokemon = conversor.obterDados(json, DadosPokemon.class);
-        return dadosPokemon;
+        PokemonDetalhes pokemonDetalhes = conversor.obterDados(json, PokemonDetalhes.class);
+        return pokemonDetalhes;
     }
 
-    private DadosHabilidade getHabilidades(){
+    private PokemonHabilidades getHabilidades(){
         System.out.println("Digite o nome do pokemon para ver as habilidades:");
         var nomePokemon = scanner.nextLine();
         var json = consumo.obterDados(URL_BASE + "pokemon/" + nomePokemon.toLowerCase());
-        DadosHabilidade dadosHabilidade = conversor.obterDados(json, DadosHabilidade.class);
-        return dadosHabilidade;
+        PokemonHabilidades pokemonHabilidades = conversor.obterDados(json, PokemonHabilidades.class);
+        return pokemonHabilidades;
     }
 
-    private DadosTipo getTiposPokemons(){
+    private TipoDetalhes getTiposPokemons(){
         System.out.println("Digite o tipo para ver os pokemons existentes:");
         var tipoPokemon = scanner.nextLine();
         var json = consumo.obterDados(URL_BASE + "type/" + tipoPokemon.toLowerCase());
 
-        DadosTipo tiposPokemons = conversor.obterDados(json, DadosTipo.class);
+        TipoDetalhes tiposPokemons = conversor.obterDados(json, TipoDetalhes.class);
         return tiposPokemons;
     }
 }
