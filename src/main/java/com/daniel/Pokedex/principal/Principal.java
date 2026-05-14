@@ -12,9 +12,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Principal{
-    private Scanner scanner = new Scanner(System.in);
-    private ConsumoApi consumo = new ConsumoApi();
-    private ConverteDados conversor = new ConverteDados();
+    private final Scanner scanner = new Scanner(System.in);
+    private final ConsumoApi consumo = new ConsumoApi();
+    private final ConverteDados conversor = new ConverteDados();
+
+
     private List<PokemonDetalhes> pokemonDetalhes = new ArrayList<>();
     private List<PokemonHabilidades> pokemonHabilidades = new ArrayList<PokemonHabilidades>();
     private List<TipoDetalhes> tiposPokemons = new ArrayList<TipoDetalhes>();
@@ -46,8 +48,6 @@ public class Principal{
                     mostraTiposExistentes();
                     buscaTipoPokemon();
             }
-
-
         }
     }
 
@@ -75,7 +75,7 @@ public class Principal{
         TipoDetalhes tiposPokemon = getTiposPokemons();
         tiposPokemons.add(tiposPokemon);
         tiposPokemon.pokemon().forEach(p ->
-                System.out.println("Pokemon: " + p.pokemonReferencia().nome()));
+                System.out.println("Pokemon: " + p.pokemon().nome()));
     }
 
     private void mostraTiposExistentes(){
