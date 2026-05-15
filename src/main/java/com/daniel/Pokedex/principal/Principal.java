@@ -50,8 +50,11 @@ public class Principal {
                 case 4:
                     buscaStatusPokemon();
                     break;
+                case 0:
+                    System.out.println("Você saiu!");
+                    break;
                 default:
-                    System.out.println("Opção inválida!");
+                    System.out.println("Opção inválida");
             }
         }
     }
