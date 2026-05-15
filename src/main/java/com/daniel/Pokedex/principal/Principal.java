@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Principal{
+public class Principal {
     private final Scanner scanner = new Scanner(System.in);
     private final ConsumoApi consumo = new ConsumoApi();
     private final ConverteDados conversor = new ConverteDados();
@@ -20,9 +20,9 @@ public class Principal{
     private List<TipoDetalhes> tiposPokemons = new ArrayList<TipoDetalhes>();
     private List<PokemonStatus> pokemonStatusList = new ArrayList<>();
 
-    public void exibeMenu(){
+    public void exibeMenu() {
         var opcao = -1;
-        while (opcao != 0){
+        while (opcao != 0) {
             var menu = """
                     ***POKEDEX***
                     1 - Buscar pokemon pelo nome
@@ -56,7 +56,7 @@ public class Principal{
         }
     }
 
-    private void buscaPokemonPeloNome(){
+    private void buscaPokemonPeloNome() {
         PokemonDetalhes pokemonDetalhes = getDadosPokemon();
         if (pokemonDetalhes == null) {
             return;
@@ -72,7 +72,7 @@ public class Principal{
         System.out.println("Peso: " + pesoKg + " kg\n");
     }
 
-    private void buscaHabilidadesPokemon(){
+    private void buscaHabilidadesPokemon() {
         PokemonHabilidades pokemonHabilidades = getHabilidades();
         if (pokemonHabilidades == null) {
             return;
@@ -82,7 +82,7 @@ public class Principal{
                 System.out.println("Habilidades: " + t.ability().nome()));
     }
 
-    private void buscaTipoPokemon(){
+    private void buscaTipoPokemon() {
         TipoDetalhes tiposPokemon = getTiposPokemons();
         if (tiposPokemon == null) {
             return;
@@ -92,16 +92,16 @@ public class Principal{
                 System.out.println("Pokemon: " + p.pokemon().nome()));
     }
 
-    private void mostraTiposExistentes(){
+    private void mostraTiposExistentes() {
         var json = consumo.obterDados(URL_BASE + "type");
         ListaTiposResposta dados = conversor.obterDados(json, ListaTiposResposta.class);
         dados.results().forEach(t ->
                 System.out.println("Tipo: " + t.nome()));
     }
 
-    private void buscaStatusPokemon(){
+    private void buscaStatusPokemon() {
         PokemonStatus pokemonStatus = getPokemonStatus();
-        if (pokemonStatus == null){
+        if (pokemonStatus == null) {
             return;
         }
         pokemonStatusList.add(pokemonStatus);
@@ -110,7 +110,7 @@ public class Principal{
                 System.out.println(p.stat().nome() + ": " + p.valor()));
     }
 
-    private PokemonDetalhes getDadosPokemon(){
+    private PokemonDetalhes getDadosPokemon() {
         System.out.println("Digite nome do pokemon para busca:");
         var nomePokemon = scanner.nextLine();
         var json = consumo.obterDados(URL_BASE + "pokemon/" + nomePokemon.toLowerCase());
@@ -122,7 +122,7 @@ public class Principal{
         return pokemonDetalhes;
     }
 
-    private PokemonHabilidades getHabilidades(){
+    private PokemonHabilidades getHabilidades() {
         System.out.println("Digite o nome do pokemon para ver as habilidades:");
         var nomePokemon = scanner.nextLine();
         var json = consumo.obterDados(URL_BASE + "pokemon/" + nomePokemon.toLowerCase());
@@ -134,28 +134,28 @@ public class Principal{
         return pokemonHabilidades;
     }
 
-        private TipoDetalhes getTiposPokemons(){
-            System.out.println("Digite o tipo para ver os pokemons existentes:");
-            var tipoPokemon = scanner.nextLine();
-            var json = consumo.obterDados(URL_BASE + "type/" + tipoPokemon.toLowerCase());
-            if (json.contains("Not Found")){
-                System.out.println("Tipo não encontrado!");
-                return null;
-            }
-            TipoDetalhes tiposPokemons = conversor.obterDados(json, TipoDetalhes.class);
-            return tiposPokemons;
+    private TipoDetalhes getTiposPokemons() {
+        System.out.println("Digite o tipo para ver os pokemons existentes:");
+        var tipoPokemon = scanner.nextLine();
+        var json = consumo.obterDados(URL_BASE + "type/" + tipoPokemon.toLowerCase());
+        if (json.contains("Not Found")) {
+            System.out.println("Tipo não encontrado!");
+            return null;
+        }
+        TipoDetalhes tiposPokemons = conversor.obterDados(json, TipoDetalhes.class);
+        return tiposPokemons;
+    }
+
+    private PokemonStatus getPokemonStatus() {
+        System.out.println("Digite o nome do pokemon que deseja ver os status:");
+        var nomePokemon = scanner.nextLine();
+        var json = consumo.obterDados(URL_BASE + "pokemon/" + nomePokemon.toLowerCase());
+        if (json.contains("Not Found")) {
+            System.out.println("Pokemon não encontrado");
+            return null;
         }
 
-        private PokemonStatus getPokemonStatus(){
-            System.out.println("Digite o nome do pokemon que deseja ver os status:");
-            var nomePokemon = scanner.nextLine();
-            var json = consumo.obterDados(URL_BASE + "pokemon/" + nomePokemon.toLowerCase());
-            if (json.contains("Not Found")) {
-                System.out.println("Pokemon não encontrado");
-                return null;
-            }
-
-            PokemonStatus pokemonStatus = conversor.obterDados(json, PokemonStatus.class);
-            return pokemonStatus;
-        }
+        PokemonStatus pokemonStatus = conversor.obterDados(json, PokemonStatus.class);
+        return pokemonStatus;
+    }
 }
